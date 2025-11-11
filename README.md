@@ -25,8 +25,33 @@ There are no dependencies to frameworks and/or libraries and could be extracted 
 
 ### *presenter* package
 
-## Diagram
+## Delivery Tracking API
 
-Here is a flow diagram of the payment of an order.
+This API provides functionality to track the delivery status of customer orders.
 
-![c4 component](./docs/c4-component.png)
+### Endpoint
+
+`GET /api/v1/delivery/track/{orderId}`
+
+Retrieves the current delivery status and estimated delivery time for a given order.
+
+**Path Parameters:**
+
+*   `orderId` (string, required): Unique identifier for the order.
+
+**Example Response (200 OK):**
+
+```json
+{
+  "orderId": "ORDER123",
+  "deliveryStatus": "Shipped",
+  "estimatedDeliveryTime": "2025-12-31T10:30:00Z",
+  "lastUpdated": "2025-12-31T09:45:00Z",
+  "currentLocation": {
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "address": "Los Angeles, CA"
+  }
+}
+```
+

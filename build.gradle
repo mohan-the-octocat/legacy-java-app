@@ -1,53 +1,55 @@
 buildscript {
-	ext {
-		springBootVersion = '2.0.2.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+       ext {
+               springBootVersion = '2.7.18'
+       }
+       repositories {
+               mavenCentral()
+       }
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse-wtp'
+//apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'war'
+//apply plugin: 'war'
 
 group = 'com.eliostvs'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = 17
 
 repositories {
-	mavenCentral()
+       mavenCentral()
 }
 
+/*
 configurations {
-	providedRuntime
+       providedRuntime
 }
+*/
 
 test {
-	doFirst {
-		systemProperty 'spring.profiles.active', 'test'
-	}
+       doFirst {
+               println "Starting tests..."
+       }
 }
 
 dependencies {
-	compileOnly('org.projectlombok:lombok')
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.flywaydb:flyway-core')
-	compile('io.jsonwebtoken:jjwt:0.9.0')
-	runtime('org.springframework.boot:spring-boot-devtools')
-	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+           compileOnly('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
+       implementation('org.springframework.boot:spring-boot-starter-actuator')
+       implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+       implementation('org.springframework.boot:spring-boot-starter-web')
+       implementation('org.springframework.boot:spring-boot-starter-security')
+       implementation('org.flywaydb:flyway-core')
+       implementation('io.jsonwebtoken:jjwt:0.9.0')
+       runtimeOnly('org.springframework.boot:spring-boot-starter-devtools')
+       //providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
-	runtime('com.h2database:h2')
+           runtimeOnly('com.h2database:h2')
+           runtimeOnly('org.yaml:snakeyaml:1.33')
 
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
-    testCompile('com.github.javafaker:javafaker:0.15')
-}
+               testImplementation('org.springframework.boot:spring-boot-starter-test')
+               testImplementation('org.springframework.security:spring-security-test')
+           implementation('org.springframework.boot:spring-boot-starter-validation')
+           testImplementation('com.github.javafaker:javafaker:0.15')
+       }
