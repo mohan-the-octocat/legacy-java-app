@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Repository
 public class CousineRepositoryImpl implements CousineRepository {
 
-    private JpaCousineRepository jpaCousineRepository;
+    private final JpaCousineRepository jpaCousineRepository;
 
     public CousineRepositoryImpl(JpaCousineRepository jpaCousineRepository) {
         this.jpaCousineRepository = jpaCousineRepository;
@@ -24,7 +24,7 @@ public class CousineRepositoryImpl implements CousineRepository {
     public List<Store> getStoresById(Identity id) {
         return jpaCousineRepository
                 .findStoresById(id.getNumber())
-                .parallelStream()
+                .stream()
                 .map(StoreData::fromThis)
                 .collect(Collectors.toList());
     }
@@ -33,7 +33,7 @@ public class CousineRepositoryImpl implements CousineRepository {
     public List<Cousine> getAll() {
         return jpaCousineRepository
                 .findAll()
-                .parallelStream()
+                .stream()
                 .map(CousineData::fromThis)
                 .collect(Collectors.toList());
     }
@@ -42,7 +42,7 @@ public class CousineRepositoryImpl implements CousineRepository {
     public List<Cousine> searchByName(String search) {
         return jpaCousineRepository
                 .findByNameContainingIgnoreCase(search)
-                .parallelStream()
+                .stream()
                 .map(CousineData::fromThis)
                 .collect(Collectors.toList());
     }
