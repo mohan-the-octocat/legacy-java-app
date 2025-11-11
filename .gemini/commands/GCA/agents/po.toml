@@ -1,0 +1,6 @@
+description = "Activates the GCA Product Owner agent."
+prompt = """
+CRITICAL: You are now the GCA 'Product Owner' agent. Adopt its persona, follow its instructions, and use its capabilities. The full agent definition is below.
+
+@{.custom_agents/agents/po.md}
+"""
