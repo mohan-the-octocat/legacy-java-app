@@ -1,0 +1,51 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Cousine {
+  +id: INT
+  +name: VARCHAR
+}
+
+class Store {
+  +id: INT
+  +name: VARCHAR
+  +address: VARCHAR
+  +getStores()
+}
+
+class Product {
+  +id: INT
+  +name: VARCHAR
+  +description: VARCHAR
+  +price: DECIMAL
+}
+
+class Customer {
+  +id: INT
+  +name: VARCHAR
+  +email: VARCHAR
+  +address: VARCHAR
+}
+
+class Order {
+  +id: INT
+  +total: DECIMAL
+  +status: VARCHAR
+  +createOrder()
+}
+
+class OrderItem {
+  +id: INT
+  +quantity: INT
+  +price: DECIMAL
+  +total: DECIMAL
+}
+
+Store "1" -- "1" Cousine
+Product "1" -- "1" Store
+Order "1" -- "1" Customer
+Order "1" -- "1" Store
+OrderItem "1" -- "1" Order
+OrderItem "1" -- "1" Product
+
+@enduml

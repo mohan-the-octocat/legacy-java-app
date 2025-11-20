@@ -9,4 +9,8 @@ public class Identity {
     public static Identity nothing() {
         return new Identity(Long.MIN_VALUE);
     }
+
+    public static Identity newIdentity() {
+        return nothing();
+    }
 }

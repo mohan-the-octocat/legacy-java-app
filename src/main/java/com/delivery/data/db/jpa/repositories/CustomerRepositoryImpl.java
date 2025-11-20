@@ -35,4 +35,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public Optional<CustomerData> findById(Long id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Optional<Customer> findByIdentity(com.delivery.core.domain.Identity id) {
+        return repository.findById(id.getNumber()).map(CustomerData::fromThis);
+    }
 }

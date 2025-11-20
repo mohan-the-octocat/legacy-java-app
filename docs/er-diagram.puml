@@ -1,0 +1,66 @@
+@startuml
+skinparam linetype ortho
+
+entity Cousine {
+  *id : INT
+  --
+  name : VARCHAR(100)
+}
+
+entity Store {
+  *id : INT
+  --
+  name : VARCHAR(100)
+  address : VARCHAR(300)
+  --
+  cousine_id : INT <<FK>>
+}
+
+entity Product {
+  *id : INT
+  --
+  name : VARCHAR(100)
+  description : VARCHAR(300)
+  price : DECIMAL(19, 2)
+  --
+  store_id : INT <<FK>>
+}
+
+entity Customer {
+  *id : INT
+  --
+  name : VARCHAR(50)
+  email : VARCHAR(100)
+  address : VARCHAR(200)
+  password : VARCHAR(100)
+}
+
+entity "Order" as OrderEntity {
+  *id : INT
+  --
+  total : DECIMAL(19, 2)
+  status : VARCHAR(100)
+  --
+  customer_id : INT <<FK>>
+  store_id : INT <<FK>>
+}
+
+entity OrderItem {
+  *id : INT
+  --
+  quantity : INT
+  price : DECIMAL(19, 2)
+  total : DECIMAL(19, 2)
+  --
+  order_id : INT <<FK>>
+  product_id : INT <<FK>>
+}
+
+Cousine ||--o{ Store : has
+Store ||--o{ Product : sells
+Customer ||--o{ OrderEntity : places
+Store ||--o{ OrderEntity : receives
+OrderEntity ||--o{ OrderItem : contains
+Product ||--o{ OrderItem : part of
+
+@enduml

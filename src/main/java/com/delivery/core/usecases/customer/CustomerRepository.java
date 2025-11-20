@@ -13,4 +13,6 @@ public interface CustomerRepository {
     Optional<CustomerData> findByEmail(String email);
 
     Optional<CustomerData> findById(Long id);
+    
+    Optional<Customer> findByIdentity(com.delivery.core.domain.Identity id);
 }

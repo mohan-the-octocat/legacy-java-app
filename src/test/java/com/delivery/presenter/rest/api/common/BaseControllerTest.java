@@ -38,7 +38,7 @@ public abstract class BaseControllerTest {
     protected RequestBuilder asyncPostRequest(String url, String payload, String token) throws Exception {
         // @formatter:off
         MockHttpServletRequestBuilder content = post(url)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(payload)
                 .header("Authorization", "Bearer " + token);
 
@@ -53,7 +53,7 @@ public abstract class BaseControllerTest {
         // @formatter:off
         return asyncDispatch(
                 getMockMvc().perform(
-                        post(url).contentType(MediaType.APPLICATION_JSON_UTF8).content(payload))
+                        post(url).contentType(MediaType.APPLICATION_JSON).content(payload))
                 .andExpect(request().asyncStarted())
                 .andReturn());
         // @formatter:on

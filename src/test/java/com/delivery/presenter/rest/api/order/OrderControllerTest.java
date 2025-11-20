@@ -31,6 +31,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -47,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = OrderController.class, secure = false)
+@WebMvcTest(OrderController.class)
 public class OrderControllerTest extends BaseControllerTest {
 
     private static final String TOKEN = "token";
@@ -118,6 +119,7 @@ public class OrderControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void deliveryOrderReturnsOk() throws Exception {
         // given
         Order order = TestCoreEntityGenerator.randomOrder();
@@ -137,12 +139,13 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.message", is("Order successfully delivered")));
     }
 
     @Test
+    @WithMockUser
     public void payOrderReturnsOk() throws Exception {
         // given
         Order order = TestCoreEntityGenerator.randomOrder();
@@ -162,12 +165,13 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.message", is("Order successfully paid")));
     }
 
     @Test
+    @WithMockUser
     public void deleteOrderReturnsOk() throws Exception {
         // given
         Order order = TestCoreEntityGenerator.randomOrder();
@@ -187,12 +191,13 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.message", is("Order successfully canceled")));
     }
 
     @Test
+    @WithMockUser
     public void getCustomerByOrderIdReturnsOk() throws Exception {
         // given
         Order order = TestCoreEntityGenerator.randomOrder();
@@ -215,11 +220,12 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is(customer.getName())));
     }
 
     @Test
+    @WithMockUser
     public void getOrderByIdReturnOk() throws Exception {
         // given
         Order order = TestCoreEntityGenerator.randomOrder();
@@ -239,7 +245,7 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(order.getId().getNumber().intValue())));
     }
 
@@ -252,11 +258,12 @@ public class OrderControllerTest extends BaseControllerTest {
 
         // then
         mockMvc
-                .perform(post("/Order").contentType(MediaType.APPLICATION_JSON_UTF8).content(payload))
+                .perform(post("/Order").contentType(MediaType.APPLICATION_JSON).content(payload))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
+    @WithMockUser
     public void createOrderReturnsResourceNotFoundWhenStoreOrProductIsNotFound() throws Exception {
         // given
         OrderRequest orderRequest = TestEntityGenerator.randomOrderRequest();
@@ -274,12 +281,13 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success", is(false)))
                 .andExpect(jsonPath("$.message", is("Error")));
     }
 
     @Test
+    @WithMockUser
     public void createOrderReturnsHttpCreated() throws Exception {
         // given
         OrderRequest orderRequest = TestEntityGenerator.randomOrderRequest();
@@ -300,7 +308,7 @@ public class OrderControllerTest extends BaseControllerTest {
         // then
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(header().string("location", "http://localhost/Order/" + order.getId().getNumber()))
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.message", is("order created successfully")));
