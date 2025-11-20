@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: Legacy Java App API
+  description: API documentation for the Legacy Java App.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /Cousine:
+    get:
+      summary: Get all cousines
+      responses:
+        '200':
+          description: A list of cousines
+  /Cousine/{id}/stores:
+    get:
+      summary: Get stores by cousine ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of stores for the given cousine ID
+  /Cousine/search/{text}:
+    get:
+      summary: Search for cousines by name
+      parameters:
+        - name: text
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of cousines matching the search text
+  /Product:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: A list of products
+  /Product/{id}:
+    get:
+      summary: Get a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single product
+  /Product/search/{text}:
+    get:
+      summary: Search for products by name or description
+      parameters:
+        - name: text
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of products matching the search text
+  /Store:
+    get:
+      summary: Get all stores
+      responses:
+        '200':
+          description: A list of stores
+  /Store/search/{text}:
+    get:
+      summary: Search for stores by name
+      parameters:
+        - name: text
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of stores matching the search text
+  /Store/{id}:
+    get:
+      summary: Get a store by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single store
+  /Store/{id}/products:
+    get:
+      summary: Get products by store ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of products for the given store ID
+  /Customer:
+    post:
+      summary: Sign up a new customer
+      requestBody:
+        description: Customer sign up details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Customer created
+  /Customer/auth:
+    post:
+      summary: Authenticate a customer
+      requestBody:
+        description: Customer sign in details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authentication successful
+  /Order:
+    post:
+      summary: Create a new order
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Order created
+  /Order/{id}:
+    get:
+      summary: Get an order by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single order
+    delete:
+      summary: Delete an order by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Order deleted
+  /Order/{id}/customer:
+    get:
+      summary: Get customer for an order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The customer who placed the order
+  /Order/{id}/payment:
+    post:
+      summary: Pay for an order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Payment successful
+  /Order/{id}/delivery:
+    post:
+      summary: Mark an order as delivered
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order marked as delivered
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
